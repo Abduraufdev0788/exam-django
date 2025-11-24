@@ -16,3 +16,6 @@ class Score(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Score(id={self.id}, game={self.game.title}, player={self.player.nickname}, result={self.result}, points={self.points})"
