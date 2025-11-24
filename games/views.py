@@ -93,6 +93,25 @@ class GameDetailView(View):
             }
         
         return JsonResponse(context, status = 201)
+    
+    def get(self, request:HttpRequest, game_id:int)->JsonResponse:
+        game = get_object_or_404(Games, id = game_id)
+
+        context = {
+                "id": game.id,
+                "title": game.title,
+                "location": game.location,
+                "start_date": game.start_date,
+                "description": game.description,
+                "created_at": game.created_at
+            }
+        
+        return JsonResponse(context, status = 201)
+    
+    def delete(self, request:HttpRequest, game_id:int)->JsonResponse:
+        game = get_object_or_404(Games, id = game_id)
+        game.delete()
+        return JsonResponse({"error": "Cannot delete game with existing scores. Tournament has active games."}, status = 204)
 
 
 
