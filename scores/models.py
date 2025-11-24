@@ -6,7 +6,7 @@ class Score(models.Model):
         ('loss', 'Loss'),
         ('draw', 'Draw'),
     )
-    game = models.ForeignKey('games.Game', on_delete=models.PROTECT, related_name='scores')
+    game = models.ForeignKey('games.Games', on_delete=models.PROTECT, related_name='scores')
     player = models.ForeignKey('players.Player', on_delete=models.PROTECT, related_name='scores')
     result = models.CharField(max_length=10, choices=RESULT_CHOICES )
     points = models.IntegerField()
