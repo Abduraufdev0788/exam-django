@@ -122,6 +122,22 @@ class ScoreDetailView(View):
         }
 
         return JsonResponse(context, status=200)
+    def delete(self, request:HttpRequest, score_id:int)->JsonResponse:
+        score = get_object_or_404(Score, id=score_id)
+        player = score.player
+        score.delete()
+
+        points_map = {'win': 10, 'draw': 5, 'lose': 0}
+        all_scores = Score.objects.filter(player = player)
+        uptate_rating = 0
+
+        for score in all_scores:
+            uptate_rating += points_map[score.result]
+
+        player.rating = uptate_rating
+        player.save()
+
+        return JsonResponse({"message": "o'chirildi"})
 
 
 
