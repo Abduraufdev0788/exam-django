@@ -1,5 +1,5 @@
 from multiprocessing import context
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.views import View
 from django.http import HttpRequest, JsonResponse
 from .models import Score
@@ -29,7 +29,7 @@ class CreateScore(View):
             
             game = get_object_or_404(Games, id=game_id)
             player = get_object_or_404(Player, id=player_id)
-            
+
             points_map = {'win': 10, 'draw': 5, 'loss': 0}
 
             score = Score.objects.create(
