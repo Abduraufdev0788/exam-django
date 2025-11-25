@@ -98,6 +98,31 @@ class CreateScore(View):
         }
 
         return JsonResponse(context, status=201)
+    
+class ScoreDetailView(View):
+    def get(self, request:HttpRequest, score_id:int)->JsonResponse:
+        score = get_object_or_404(Score, id=score_id)
+
+        context = {
+            "id": score.id,
+            "game":{
+                "id":score.game.id,
+                "title":score.game.title,
+                "location":score.game.location
+            },
+            "player":{
+                "id":score.player.id,
+                "nickname": score.player.nickname,
+                "country": score.player.country
+            },
+            "result": score.result,
+            "points": score.points,
+            "opponent_name":score.opponent_name,
+            "created_at":score.created_at.isoformat()
+        }
+
+        return JsonResponse(context, status=200)
+
 
 
 
