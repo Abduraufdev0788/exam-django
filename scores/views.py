@@ -56,6 +56,49 @@ class CreateScore(View):
         if len(results_list) == 1:
             return JsonResponse(results_list[0], status=201)
         return JsonResponse(results_list, safe=False, status=201)
+    
+    def get(self, request: HttpRequest) -> JsonResponse:
+        scores = Score.objects.all()
+
+        game_id  = request.GET.get("game_id ")
+        player_id = request.GET.get("player_id")
+        result = request.GET.get("result")
+
+        if game_id:
+            search = scores.filter(game__id=game_id)
+
+        if player_id:
+            search = scores.filter(player__id=player_id)
+        
+        if result:
+            search = scores.filter(result = result)
+
+        results = []
+
+        for score in search:
+            results.append({
+                "id": score.id,
+                "game":{
+                    "id":score.game.id,
+                    "title":score.game.title
+                },
+                "player":{
+                    "id":score.player.id,
+                    "nickname": score.player.nickname
+                },
+                "result": score.result,
+                "points": score.points,
+                "opponent_name":score.opponent_name,
+                "created_at":score.created_at.isoformat()
+            })
+        
+        context = {
+            "count": len(results),
+            "results": results
+        }
+
+        return JsonResponse(context, status=201)
+
 
 
             
